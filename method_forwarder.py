@@ -51,4 +51,5 @@ class MethodForwarder(MethodMissing):
       if hasattr(forwardee, method_name):
         return getattr(forwardee, method_name)(forwardee, *args, **kwargs)
 
-    return super(MethodForwarder, self).method_missing(*args, **kwargs)
+    return super(MethodForwarder, self).method_missing(method_name, *args,
+        **kwargs)
