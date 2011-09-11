@@ -37,5 +37,27 @@ class MethodForwarderTest(unittest.TestCase):
     self.assertEquals(('foo', 5), result,
         'arguments should be passed through')
 
+  def test_method_forwarding_with_multiple_forwardees(self):
+    class TestMethodForwarderWithMultipleForwardees(MethodForwarder):
+      def __init__(self):
+        super(TestMethodForwarderWithMultipleForwardees, self).__init__()
+    
+    first_forwardee = Mock(['foo_method'])
+    second_forwardee = Mock(['bar_method'])
+
+    test_obj = TestMethodForwarderWithMultipleForwardees()
+    test_obj.add_forwardee(first_forwardee)
+    test_obj.add_forwardee(second_forwardee)
+
+    first_forwardee.foo_method.return_value = 'foo'
+    second_forwardee.bar_method.return_value = 'bar'
+
+    first_result = test_obj.foo_method()
+    second_result = test_obj.bar_method()
+
+    self.assertEquals('foo', first_result, 'should forward to first_forwardee')
+    self.assertEquals('bar', second_result, 
+      "should forward to second_forwardee as first_forwardee doesn't respond")
+
 if __name__ == '__main__':
   unittest.main()
