@@ -59,5 +59,16 @@ class MethodForwarderTest(unittest.TestCase):
     self.assertEquals('bar', second_result, 
       "should forward to second_forwardee as first_forwardee doesn't respond")
 
+  def test_method_forwarding_when_method_missing_from_all_forwardees(self):
+    class TestForwardingMethodMissing(MethodForwarder):
+      def __init__(self):
+        super(TestForwardingMethodMissing, self).__init__()
+
+    first_forwardee = Mock(['foo_method'])
+    test_obj = TestForwardingMethodMissing()
+    test_obj.add_forwardee(first_forwardee)
+    self.assertRaises(NotImplementedError, test_obj.bar_method)
+    
+
 if __name__ == '__main__':
   unittest.main()

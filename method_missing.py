@@ -39,4 +39,4 @@ class MethodMissing(object):
       *args positional arguments for the method.
       **kwargs keyword arguments for the method.
     """
-    raise NotImplemented
+    raise NotImplementedError
