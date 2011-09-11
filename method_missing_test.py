@@ -66,8 +66,30 @@ class MethodMissingTest(unittest.TestCase):
     self.assertEquals(bar_arg, test_obj.arg_value2,
         'second positional arg should be passed through')
 
-  def test_method_missing_passes_kwargs_through(self):
-    pass
+  def test_method_missing_passes_args_and_kwargs_through(self):
+    class TestKwargsPassedClass(MethodMissing):
+      def __init__(self):
+        self.positional_arg = None
+        self.foo_kwarg = None
+        self.bar_kwarg = None
+
+      def method_missing(self, method_name, *args, **kwargs):
+        self.positional_arg = args[0]
+        self.foo_kwarg = kwargs['foo']
+        self.bar_kwarg = kwargs['bar']
+
+    test_obj = TestKwargsPassedClass()
+    positional_arg = 'positional'
+    foo_kwarg = 'foo_kwarg'
+    bar_kwarg = 'bar_kwarg'
+    test_obj.nonexistent_method(positional_arg, foo=foo_kwarg, bar=bar_kwarg)
+
+    self.assertEquals(positional_arg, test_obj.positional_arg,
+        'Positional arg should be passed through')
+    self.assertEquals(foo_kwarg, test_obj.foo_kwarg,
+        "foo_kwarg should be passed through")
+    self.assertEquals(bar_kwarg, test_obj.bar_kwarg,
+        "bar_kwarg should be passed through")
 
 if __name__ == '__main__':
   unittest.main()
