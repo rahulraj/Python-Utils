@@ -32,6 +32,19 @@ class MethodMissingTest(unittest.TestCase):
     self.assertEquals('nonexistent_method', test_obj.method_missing_name,
         "'nonexistent_method' should be passed to method_missing")
 
+  def test_method_missing_passes_self_through(self):
+    class TestSelfPassedClass(MethodMissing):
+      def __init__(self, assertEquals):
+        self.assertEquals = assertEquals
+        self.self_reference = self
+
+      def method_missing(self, method_name, *args, **kwargs):
+        self.assertEquals(self.self_reference, self,
+            'self should be passed through')
+
+    test_obj = TestSelfPassedClass(self.assertEquals)
+    test_obj.nonexistent_method()
+
   def test_method_missing_passes_args_through(self):
     pass
 
