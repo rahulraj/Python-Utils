@@ -1,0 +1,7 @@
+This repo contains some code that reduces boilerplate when writing Python.
+Currently three utilities are implemented:
+
+with_getters_for - a function that adds getter functions to objects
+assign_injectables - a function to populate a constructor that uses dependency
+                     injection
+MethodMissing - a mixin class that implements Ruby's method_missing in Python
