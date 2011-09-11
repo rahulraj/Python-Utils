@@ -1,6 +1,15 @@
 import unittest
 from method_forwarder import MethodForwarder
-from mock import Mock
+try:
+  from mock import Mock
+except ImportError:
+  print "You don't have mock installed. On Unixy systems, run as superuser:"
+  print "S apt-get install python-pip # Or the equivalent for your distro"
+  print "$ pip install mock"
+  print "On Windows, download from http://www.voidspace.org.uk/python/mock/"
+  import sys
+  sys.exit(1)
+
 
 class MethodForwarderTest(unittest.TestCase):
 
