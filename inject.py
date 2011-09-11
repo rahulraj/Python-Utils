@@ -3,6 +3,23 @@ Module providing a utility function assign_injectables to be used when
 initializing a class and injecting its dependencies.
 """
 
+def is_magic_variable(var_name):
+  """
+  Determines if a variable's name indicates that it is a 'magic variable'.
+  That is, it starts and ends with two underscores. e.g. '__foo__'. These
+  variables should not be injected. 
+
+  Args:
+    var_name the name of the variable.
+
+  Returns:
+    True if var_name starts and ends with two underscores, False
+    otherwise.
+  """
+  return var_name[0] == '_' and var_name[1] == '_' and \
+     var_name[len(var_name) - 1] == '_'and \
+     var_name[len(var_name) - 2] == '_'
+
 def assign_injectables(obj, locals_dict):
   """
   Given an object and a dictionary containing local variables in the
@@ -14,22 +31,6 @@ def assign_injectables(obj, locals_dict):
     locals_dict the dictionary containing local variables at
                 construction time.
   """
-  def is_magic_variable(var_name):
-    """
-    Determines if a variable's name indicates that it is a 'magic variable'.
-    That is, it starts and ends with two underscores. e.g. '__foo__'. These
-    variables should not be injected. 
-
-    Args:
-      var_name the name of the variable.
-
-    Returns:
-      True if var_name starts and ends with two underscores, False
-      otherwise.
-    """
-    return var_name[0] == '_' and var_name[1] == '_' and \
-       var_name[len(var_name) - 1] == '_'and \
-       var_name[len(var_name) - 2] == '_'
 
   def is_injectable(var_name):
     """
