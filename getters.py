@@ -33,6 +33,6 @@ def with_getters_for(clazz, *args):
         clazz the class to which getters should be added.
         *args the names of variables that need getters.
   """
-  for arg in args:
-    getter = create_getter(arg)
+  getters = map(create_getter, args)
+  for arg, getter in zip(args, getters):
     setattr(clazz, 'get_' + arg, getter)
